@@ -1,0 +1,31 @@
+{
+  "name": "http_server",
+  "version": "1.0.0",
+  "description": "Http Server with Simple Persistence",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gouthamvreddy/http_server.git"
+  },
+  "author": "goutham reddy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gouthamvreddy/http_server/issues"
+  },
+  "homepage": "https://github.com/gouthamvreddy/http_server#readme",
+  "devDependencies": {
+    "chai-http": "^1.0.0",
+    "gulp": "^3.9.0",
+    "gulp-mocha": "^2.1.3",
+    "mocha": "^2.2.5",
+    "superagent": "^1.2.0",
+    "superagent-cli": "^2.0.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "express": "^4.13.1"
+  }
+}

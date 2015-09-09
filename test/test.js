@@ -1,38 +1,63 @@
-var index = require('../index');
+'use strict';
+
 var chai = require('chai');
-var expect = chai.expect;
 var chaiHttp = require('chai-http');
+var expect = chai.expect;
+var server = require('../server.js');
 
 chai.use(chaiHttp);
 
 describe('http server responds to GET/POST/PUT/DELETE requests', function() {
-  it('should GET', function(done) {
-    chai.request('localhost:3000')
-        .get('/api')
-        .query({query: 'name'})
+
+  it('POST should create new user file', function(){
+    chai.request('http://localhost:3000')
+        .post('/api/users/test')
+        .send({name: "test", email: "testing@test.com"})
         .end(function(err, res) {
           expect(err).to.eql(null);
-          expect(res).to.be.html;
           done();
         });
-      });
-/*
-  it('should GET', function(){
+    });
 
-    expect();
+  it('GET should get test user name and email', function(done) {
+    chai.request('http://localhost:3000')
+        .get('/api/users/test')
+        .end(function(err, res) {
+          expect(err).to.eql(null);
+          expect(res.body).to.eql('{"name":"test","email:"testing@test.com"}');
+          done();
+        });
   });
 
-  it('should POST', function(){
-    expect();
 
-  });f
+  it('POST respond with "File already exists!"', function(){
+    chai.request('http://localhost:3000')
+        .post('/api/users/test')
+        .send({name: "test", email: "testing@test.com"})
+        .end(function(err, res) {
+          expect(err).to.eql(null);
+          expect(res.body.msg).to.eql("File already exists!");
+          done();
+        });
+    });
 
-  it('should PUT', function(){
-    expect();
-  });
+  it('PUT should update name and email for test user', function(){
+    chai.request('http://localhost:3000')
+        .put('/api/users/test')
+        .send({name: "test2", email: "test2@test2.com"})
+        .end(function(err, res) {
+          expect(err).to.eql(null);
+          done();
+        });
+    });
 
-  it('should DELETE', function(){
-    expect();
-    */
+  it('DELETE should delete test file', function(){
+    chai.request('http://localhost:3000')
+        .delete('/api/users/test')
+        .end(function(err, res) {
+          expect(err).to.eql(null);
+          done();
+        });
+    });
 
 });

@@ -33,7 +33,7 @@ app.post('/api/users/:username', function(req, res) {
 
 // PUT
 app.put('/api/users/:username', function(req, res) {
-  var path = './data/' + req.params.filename;
+  var path = './data/' + req.params.username + '.json';
   if(!fs.existsSync(path)) {
     res.send("File doesn't exists!");
     return;
@@ -43,8 +43,7 @@ app.put('/api/users/:username', function(req, res) {
       res.sendStatus(500);
       return;
     }
-    var newData = JSON.parse(data);
-    newData.users.push({"name": "Laura"});
+    var newData = {'name': req.body.name, 'email': req.body.email};
     fs.writeFile(path, JSON.stringify(newData), function(err) {
       if(err) res.sendStatus(500);
       res.sendStatus(200);

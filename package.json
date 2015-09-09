@@ -19,7 +19,7 @@
   "devDependencies": {
     "chai-http": "^1.0.0",
     "gulp": "^3.9.0",
-    "gulp-babel": "^5.1.0",
+    "gulp-mocha": "^2.1.3",
     "mocha": "^2.2.5",
     "superagent": "^1.2.0",
     "superagent-cli": "^2.0.0"

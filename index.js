@@ -1,20 +1,26 @@
 var express = require('express');
 var fs = require('fs');
 var app = express();
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
 
-// Get
-app.get('/api/:filename', function(req, res) {
-  fs.readFile('./data/' + req.params.filename, function(err, json){
+// GET
+app.get('/api/users/:username', function(req, res) {
+  var path = './data/' + req.params.username + '.json';
+  if(!fs.existsSync(path)) {
+    res.send("File doesn't exists!");
+    return;
+  }
+  fs.readFile(path, function(err, json){
     if(err) res.sendStatus(500);
-      res.send(json.toString());
-      //res.json(data);
+    res.send(json.toString());
   });
 });
 
-// Post
-app.post('/api/:filename', function(req, res) {
-  var data = {"user": [{"name": "James"},{"name": "Matt"}]};
-  var path = './data/' + req.params.filename;
+// POST
+app.post('/api/users/:username', function(req, res) {
+  var data = {'name': req.body.name, 'email': req.body.email};
+  var path = './data/' + req.params.username + '.json';
   if(fs.existsSync(path)) {
     res.send("File already exists!");
     return;
@@ -25,19 +31,29 @@ app.post('/api/:filename', function(req, res) {
   });
 });
 
-// Put
-app.put('/api/:filename', function(req, res) {
-  var data = {"user": [{"name": "James"},{"name": "Matt"}]};
-  var path = './data/' + req.params.filename;
-  fs.writeFile(path, JSON.stringify(data), function(err) {
-    if(err) res.sendStatus(500);
-    res.sendStatus(200);
+// PUT
+app.put('/api/users/:username', function(req, res) {
+  var path = './data/' + req.params.username + '.json';
+  if(!fs.existsSync(path)) {
+    res.send("File doesn't exists!");
+    return;
+  }
+  fs.readFile(path, function(err, data){
+    if(err) {
+      res.sendStatus(500);
+      return;
+    }
+    var newData = {'name': req.body.name, 'email': req.body.email};
+    fs.writeFile(path, JSON.stringify(newData), function(err) {
+      if(err) res.sendStatus(500);
+      res.sendStatus(200);
+    })
   });
 });
 
-// Delete
-app.delete('/api/:filename', function(req, res) {
-  var path = './data/' + req.params.filename;
+// DELETE
+app.delete('/api/users/:username', function(req, res) {
+  var path = './data/' + req.params.username + '.json';
   if(!fs.existsSync(path)) {
     res.send("File doesn't exist!");
     return;
@@ -48,13 +64,8 @@ app.delete('/api/:filename', function(req, res) {
   });
 });
 
-
-//app.listen(3000, function() {
-//  console.log("Server started");
-//});
-
-app.listen(process.env.PORT || 8888, function(){
-  console.log("starting server on port: ", 8888);
+app.listen(process.env.PORT || 3000, function(){
+  console.log("Server started on port: ", 3000);
 });
 
 
